@@ -6,10 +6,13 @@
   @version 1.0
  */
 
+#include <memory>
 #include <gtest/gtest.h>
+#include "blockingqueue.h"
 
 
-//TEST()
-//{
-//    EXPECT_EQ();
-//}
+
+TEST(BlockingQueueTest, DefaultConstructor)
+{
+
+}
