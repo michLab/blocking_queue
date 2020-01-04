@@ -14,17 +14,38 @@
 
 using namespace std;
 
+/// Define classes used during testing:
 class A {
 public:
-    int* ptr;
+    A() {
+        data = nullptr;
+    }
+    int* data;
 };
 
-void producer(BlockingQueue<std::unique_ptr<A>>& q)
+class B {
+public:
+    B() {
+        data = 1;
+    }
+    int data;
+};
+
+
+/// Define type used by queue:
+typedef A queueItemType;
+
+/**
+  @brief A producer callback
+  @param q A reference to BlockingQueue object
+  */
+[[noreturn]] void producer(BlockingQueue<std::unique_ptr<queueItemType>>& q)
 {
     int i = 0;
     while (true) {
-        std::unique_ptr<A> a_ptr = std::make_unique<A>();
-        a_ptr->ptr[0] = i++;
+        std::unique_ptr<queueItemType> a_ptr = std::make_unique<queueItemType>();
+        a_ptr->data = new int;
+        a_ptr->data[0] = i++;
         std::cout << "[Producer] push data to queue" << std::endl;
         q.push(std::move(a_ptr));
         std::cout << "[Producer] sleeping" << std::endl;
@@ -32,30 +53,38 @@ void producer(BlockingQueue<std::unique_ptr<A>>& q)
     }
 }
 
-void consumer(BlockingQueue<std::unique_ptr<A>>& q)
+/**
+  @brief A consumer callback
+  @param q A reference to BlockingQueue object
+  */
+[[noreturn]] void consumer(BlockingQueue<std::unique_ptr<queueItemType>>& q)
 {
-    int i = 0;
     while (true) {
-        std::unique_ptr<A> a_ptr = std::make_unique<A>();
+        std::unique_ptr<queueItemType> a_ptr = std::make_unique<queueItemType>();
         std::cout << "[Consumer] Waits for data" << std::endl;
         q.pop(a_ptr);
-        std::cout << "[Producer] Get data" << std::endl;
-        a_ptr.reset();
+        std::cout << "[Consumer] Get data" << std::endl;
+        a_ptr.reset(); /// Destroy object currently menaged by unique_ptr
     }
 }
 
+/**
+  @brief The main function
+  @param argc Argument count
+  @param argv Argument table
+  */
 //#define RUN_TESTS
 int main(int argc, char** argv)
 {
 #ifndef RUN_TESTS
     /// Create instance of BlockingQueue
-    BlockingQueue<std::unique_ptr<A>> q;
+    BlockingQueue<std::unique_ptr<queueItemType>> q;
     /// Create producer thread:
-    //std::thread producer_thread();
+    std::thread producer_thread(producer, std::ref(q));
     /// Create consumer thread:
+    std::thread consumer_thread(consumer, std::ref(q));
 
-
-    return 0;
+    while (true);
 #else
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
