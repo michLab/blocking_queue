@@ -37,7 +37,8 @@ typedef A queueItemType;
 
 /**
   @brief A producer callback
-  @param q A reference to BlockingQueue object
+  @param q A reference to BlockingQueue object. Here q is a reference to temporary
+  object q qreated on thread stack
   */
 [[noreturn]] void producer(BlockingQueue<std::unique_ptr<queueItemType>>& q)
 {
