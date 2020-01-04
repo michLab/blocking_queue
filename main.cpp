@@ -79,7 +79,8 @@ int main(int argc, char** argv)
 #ifndef RUN_TESTS
     /// Create instance of BlockingQueue
     BlockingQueue<std::unique_ptr<queueItemType>> q;
-    /// Create producer thread:
+    /// Create producer thread
+    /// q is passed as reference (not by value):
     std::thread producer_thread(producer, std::ref(q));
     /// Create consumer thread:
     std::thread consumer_thread(consumer, std::ref(q));
