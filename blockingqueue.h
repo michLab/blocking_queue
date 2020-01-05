@@ -3,7 +3,7 @@
   @brief A declaration of BlockingQueue class
   @author Michal Labowski
   @date 02-01-2020
-  @version 1.1
+  @version 1.2
  */
 
 #ifndef BLOCKINGQUEUE_H
@@ -115,6 +115,16 @@ public:
     {
        std::unique_lock<std::mutex> mlock(mutex_);
        return queue_.size();
+    }
+
+    /**
+     * @brief Get queue empty flag
+     * @return True whether queue is empty (whether size is zero)
+     */
+    bool empty()
+    {
+        std::unique_lock<std::mutex> mlock(mutex_);
+        return queue_.empty();
     }
 
 private:
