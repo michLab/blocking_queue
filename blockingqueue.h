@@ -91,6 +91,11 @@ public:
         cond_var_.notify_one();
     }
 
+    /**
+     * @brief Push element passed by rvalue reference to the queue.
+     * Used with moveable data types.
+     * @param a rvalue reference to the T-type object
+     */
     void push(T &&item)
     {
         /// We use conditional variable to synchronize access to queue
