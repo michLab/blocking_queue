@@ -3,7 +3,7 @@
   @brief An example of usage of BlockingQueue class
   @author Michal Labowski
   @date 02-01-2020
-  @version 1.0
+  @version 1.1
  */
 
 #include <iostream>
