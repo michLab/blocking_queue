@@ -15,3 +15,7 @@ LIBS += -lgtest -L/usr/local/lib/googletest -lpthread
 
 HEADERS += \
     blockingqueue.h
+
+DISTFILES += \
+    LICENSE.txt \
+    README.md
