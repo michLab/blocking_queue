@@ -30,6 +30,34 @@ public:
 /// Define type used by queue:
 typedef A queueItemType;
 
+
+[[noreturn]] void producer(BlockingQueue<std::unique_ptr<queueItemType>>& q)
+{
+    int i = 0;
+    while (true) {
+        std::unique_ptr<queueItemType> a_ptr = std::make_unique<queueItemType>();
+        a_ptr->data = new int;
+        a_ptr->data[0] = i++;
+        std::cout << "[Producer] push data to queue" << std::endl;
+        q.push(std::move(a_ptr));
+        std::cout << "[Producer] sleeping" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
+}
+
+
+[[noreturn]] void consumer(BlockingQueue<std::unique_ptr<queueItemType>>& q)
+{
+    while (true) {
+        std::unique_ptr<queueItemType> a_ptr = std::make_unique<queueItemType>();
+        std::cout << "[Consumer] Waits for data" << std::endl;
+        q.pop(a_ptr);
+        std::cout << "[Consumer] Get data" << std::endl;
+        a_ptr.reset(); /// Destroy object currently menaged by unique_ptr
+    }
+}
+
+
 int main(int argc, char** argv)
 {
     /// Create instance of BlockingQueue
