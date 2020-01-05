@@ -3,7 +3,7 @@
   @brief A declaration of BlockingQueue class
   @author Michal Labowski
   @date 02-01-2020
-  @version 1.0
+  @version 1.1
  */
 
 #ifndef BLOCKINGQUEUE_H
@@ -105,6 +105,16 @@ public:
         queue_.push(std::move(item));
         mlock.unlock();
         cond_var_.notify_one();
+    }
+
+    /**
+     * @brief Get queue size
+     * @return Number of elements in the queue
+     */
+    size_t size()
+    {
+       std::unique_lock<std::mutex> mlock(mutex_);
+       return queue_.size();
     }
 
 private:

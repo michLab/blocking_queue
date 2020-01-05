@@ -74,12 +74,13 @@ typedef A queueItemType;
   @param argc Argument count
   @param argv Argument table
   */
-//#define RUN_TESTS
+#define RUN_TESTS
 int main(int argc, char** argv)
 {
 #ifndef RUN_TESTS
     /// Create instance of BlockingQueue
     BlockingQueue<std::unique_ptr<queueItemType>> q;
+    q.size();
     /// Create producer thread
     /// q is passed as reference (not by value):
     std::thread producer_thread(producer, std::ref(q));
